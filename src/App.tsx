@@ -1,26 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useEffect } from 'react';
+import Character from './Character';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const App : React.FC = () => {
+
+  const [characters, setCharacters] = useState<any>([]);
+
+  useEffect(() => {
+	  getCharacters(1);
+  }, []);
+
+  const getCharacters = async (id : number) => {
+    // Utilised Axios for API calls
+    const apiResponse = await axios.get(`https://swapi.dev/api/people/${id}`);
+    console.log(apiResponse.data);
+    setCharacters(apiResponse.data);
+    console.log(characters)
+  };
+
+	return (
+		<div className="page">
+      <Character data={characters} />
+		</div>
+	);
 }
 
 export default App;
